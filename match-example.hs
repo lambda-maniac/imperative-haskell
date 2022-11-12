@@ -7,4 +7,4 @@ calculate operation a b =
         "sub" =>> (-),
         "mul" =>> (*),
         "div" =>> (/)
-    ] >>= (\op -> return $ op a b)
+    ] >>= (return . (a ~$~ b))
