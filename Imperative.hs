@@ -7,7 +7,8 @@ module Imperative
     , switch , match , (<=>), (=>>)
     , after  , (.:)
     , after' , (.:.)
-    , just   , just' )
+    , just   , just'
+    , (~$~) )
 where
 
 -- Church If, Void.
@@ -122,3 +123,7 @@ just = after return
 -- Cast `trinary' to monadic `trinary'.
 just' :: (Monad m) => (a -> a -> a -> a) -> (a -> a -> a -> m a)
 just' = after' return
+
+inbetween :: a -> b -> (a -> b -> c) -> c
+inbetween a b f = f a b
+(~$~) = inbetween
