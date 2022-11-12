@@ -4,7 +4,7 @@ module Imperative
     , unless , (!>)
     , foreach, foreach', (|>), (#|>)
     , while  , while'
-    , switch , match , (<=>)
+    , switch , match , (<=>), (=>>)
     , after  , (.:)
     , after' , (.:.)
     , just   , just' )
@@ -84,6 +84,10 @@ switch element (x:xs) =
         predicate = fst x
         m         = snd x
 
+-- Use in conjunction to `switch'.
+(<=>) :: (Eq a) => a -> b -> ((a -> Bool), b)
+(<=>) a b = ((==) a, b)
+
 -- Match, A (Switch, A).
 match :: (Monad m, Eq a) => a -> b -> [((a -> Bool), m b)] -> m b
 match element default' []     = return default'
@@ -98,8 +102,8 @@ match element default' (x:xs) =
         m         = snd x
 
 -- Use in conjunction to `match'.
-(<=>) :: (Monad m, Eq a) => a -> b -> ((a -> Bool), m b)
-(<=>) a b = ((==) a, return b)
+(=>>) :: (Monad m, Eq a) => a -> b -> ((a -> Bool), m b)
+(=>>) a b = ((==) a, return b)
 
 -- Composition, (unary . binary).
 after :: (a -> b) -> (a -> a -> a) -> a -> a -> b
